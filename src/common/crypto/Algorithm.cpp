@@ -75,6 +75,7 @@ static AlgoData const algorithms[] = {
 static AlgoData const xmrStakAlgorithms[] = {
     { "cryptonight-monerov7",    nullptr, xmrig::CRYPTONIGHT,      xmrig::VARIANT_1    },
     { "cryptonight_v7",          nullptr, xmrig::CRYPTONIGHT,      xmrig::VARIANT_1    },
+    { "cryptonight_v7_electronero",nullptr, xmrig::CRYPTONIGHT,    xmrig::VARIANT_1    },
     { "cryptonight_v7_stellite", nullptr, xmrig::CRYPTONIGHT,      xmrig::VARIANT_XTL  },
     { "cryptonight_lite",        nullptr, xmrig::CRYPTONIGHT_LITE, xmrig::VARIANT_0    },
     { "cryptonight-aeonv7",      nullptr, xmrig::CRYPTONIGHT_LITE, xmrig::VARIANT_1    },
