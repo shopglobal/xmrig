@@ -4,8 +4,8 @@
  * Copyright 2014      Lucas Jones <https://github.com/lucasjones>
  * Copyright 2014-2016 Wolf9466    <https://github.com/OhGodAPet>
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
- * Copyright 2016-2017 XMRig       <support@xmrig.com>
- *
+ * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
+ * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,11 +24,16 @@
 
 #ifdef _MSC_VER
 #   include <intrin.h>
-
-#   define bit_AES  (1 << 25)
-#   define bit_BMI2 (1 << 8)
 #else
 #   include <cpuid.h>
+#endif
+
+#ifndef bit_AES
+#   define bit_AES (1 << 25)
+#endif
+
+#ifndef bit_BMI2
+#   define bit_BMI2 (1 << 8)
 #endif
 
 #include <string.h>
@@ -87,7 +92,7 @@ static inline bool has_aes_ni()
     int cpu_info[4] = { 0 };
     cpuid(PROCESSOR_INFO, cpu_info);
 
-    return cpu_info[ECX_Reg] & bit_AES;
+    return (cpu_info[ECX_Reg] & bit_AES) != 0;
 }
 
 
@@ -95,7 +100,7 @@ static inline bool has_bmi2() {
     int cpu_info[4] = { 0 };
     cpuid(EXTENDED_FEATURES, cpu_info);
 
-    return cpu_info[EBX_Reg] & bit_BMI2;
+    return (cpu_info[EBX_Reg] & bit_BMI2) != 0;
 }
 
 
@@ -105,12 +110,12 @@ int Cpu::m_l2_cache     = 0;
 int Cpu::m_l3_cache     = 0;
 int Cpu::m_sockets      = 1;
 int Cpu::m_totalCores   = 0;
-int Cpu::m_totalThreads = 0;
+size_t Cpu::m_totalThreads = 0;
 
 
-int Cpu::optimalThreadsCount(int algo, bool doubleHash, int maxCpuUsage)
+size_t Cpu::optimalThreadsCount(size_t size, int maxCpuUsage)
 {
-    int count = m_totalThreads / 2;
+    const size_t count = m_totalThreads / 2;
     return count < 1 ? 1 : count;
 }
 
